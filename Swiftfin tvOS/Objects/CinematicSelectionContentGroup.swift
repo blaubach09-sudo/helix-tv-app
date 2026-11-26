@@ -66,7 +66,8 @@ struct CinematicSelectionContentGroup: ContentGroup {
 
         @ContentBuilder
         var body: some View {
-            let items = viewModel.hasResumeItems ? viewModel.continueWatchingItems : Array(viewModel.recentlyAddedViewModel.elements.elements)
+            let items = viewModel.hasResumeItems ? viewModel
+                .continueWatchingItems : Array(viewModel.recentlyAddedViewModel.elements.elements)
 
             CinematicItemSelector(
                 items: items,
