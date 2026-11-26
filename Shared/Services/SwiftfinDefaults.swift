@@ -382,7 +382,7 @@ extension Defaults.Keys {
         enum Transition {
 
             static var automaticPictureInPicture: Key<Bool> {
-                UserKey("automaticPictureInPicture", default: false)
+                UserKey("automaticPictureInPicture", default: true) // Helix TV: PiP on by default
             }
 
             static var pauseOnBackground: Key<Bool> {
