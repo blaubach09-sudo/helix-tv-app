@@ -68,6 +68,14 @@ extension VideoPlayer.PlaybackControls {
             content
                 .font(.system(size: viewLayout.isLarge ? 30 : 24, weight: .semibold))
                 .menuStyle(OverlayMenuStyle())
+                #if os(tvOS)
+                // Helix TV: the toolbar is the top-most control; moving up from it opens the drawer.
+                .onMoveCommand { direction in
+                    guard direction == .up else { return }
+
+                    viewState.presentSupplementDrawer()
+                }
+                #endif
                 #if os(iOS)
                 .background {
                     EmptyHitTestView()

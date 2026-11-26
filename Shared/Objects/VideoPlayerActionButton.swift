@@ -170,26 +170,51 @@ enum VideoPlayerActionButton: String, CaseIterable, Displayable, Equatable, Iden
     }
 
     static let defaultBarActionButtons: [VideoPlayerActionButton] = {
+        #if os(tvOS)
+        // Helix TV: only what people reach for mid-episode; everything else lives in the menu.
+        let buttons: [VideoPlayerActionButton] = [
+            .subtitles,
+            .audio,
+            .playNextItem,
+        ]
+        #else
         var buttons: [VideoPlayerActionButton] = [
             .aspectFill,
             .autoPlay,
             .playPreviousItem,
             .playNextItem,
         ]
+        #endif
         #if os(iOS)
         buttons.append(.playbackDestination)
         #endif
         return buttons
     }()
 
-    static let defaultMenuActionButtons: [VideoPlayerActionButton] = [
-        .audio,
-        .audioOffset,
-        .subtitles,
-        .subtitleOffset,
-        .playbackSpeed,
-        .sleepTimer,
-        .pictureInPicture,
-        .playbackSettings,
-    ].filter { supportedCases.contains($0) }
+    static let defaultMenuActionButtons: [VideoPlayerActionButton] = {
+        #if os(tvOS)
+        let buttons: [VideoPlayerActionButton] = [
+            .playbackSpeed,
+            .aspectFill,
+            .autoPlay,
+            .playPreviousItem,
+            .subtitleOffset,
+            .audioOffset,
+            .sleepTimer,
+            .playbackSettings,
+        ]
+        #else
+        let buttons: [VideoPlayerActionButton] = [
+            .audio,
+            .audioOffset,
+            .subtitles,
+            .subtitleOffset,
+            .playbackSpeed,
+            .sleepTimer,
+            .pictureInPicture,
+            .playbackSettings,
+        ]
+        #endif
+        return buttons.filter { supportedCases.contains($0) }
+    }()
 }

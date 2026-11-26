@@ -37,7 +37,8 @@ extension VideoPlayer.PlaybackControls {
         private let previewImageHeight: CGFloat = 200
 
         private var sliderHeight: CGFloat {
-            isScrubbing ? 20 : 14
+            // Helix TV: slim track, grows while scrubbing
+            isScrubbing ? 16 : 10
         }
 
         private var isScrubbing: Bool {
@@ -131,7 +132,7 @@ extension VideoPlayer.PlaybackControls {
                     viewState.beginScrub()
                 }
             }
-            .sliderContainerStyle(.capsule(showsProgressWhenUnfocused: false))
+            .sliderContainerStyle(.capsule(showsProgressWhenUnfocused: true))
             .if(chapterSlider) { view in
                 if let chapters = mediaSession.item.chapters, chapters.isNotEmpty {
                     view.inverseMask { ChapterTrackMask(chapters: chapters, runtime: mediaSession.item.runtime ?? .zero) }
@@ -141,7 +142,7 @@ extension VideoPlayer.PlaybackControls {
             }
             .frame(height: sliderHeight)
             .trackingSize($sliderSize)
-            .foregroundStyle(mediaSession.canSeek ? Color.primary : Color.gray)
+            .foregroundStyle(mediaSession.canSeek ? Color.helixGold : Color.gray)
             .disabled(!mediaSession.canSeek)
         }
 

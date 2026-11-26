@@ -128,7 +128,11 @@ extension VideoPlayer.UIContainerViewController {
             #endif
             .padding(.bottom, viewLayout.isLarge ? 0 : 8)
             .buttonStyle(.capsule)
+            #if os(tvOS)
+            .controlSize(.small)
+            #else
             .controlSize(.large)
+            #endif
             .foregroundStyle(.white)
         }
 
@@ -170,7 +174,11 @@ extension VideoPlayer.UIContainerViewController {
                 }
                 .isVisible(viewState.visibleElements.contains(.supplements))
                 .enabled(viewState.visibleElements.contains(.supplements))
+                #if os(tvOS)
+                .padding(.top, viewLayout.edgePadding)
+                #else
                 .padding(.top, viewLayout.edgeInsets.bottom / (viewLayout.isLarge ? 2 : 1))
+                #endif
                 .animation(.linear(duration: 0.25), value: viewState.presentation)
                 .animation(.linear(duration: 0.1), value: viewState.isScrubbing)
                 .animation(.bouncy(duration: 0.25, extraBounce: 0.1), value: viewState.supplements.map(\.id))

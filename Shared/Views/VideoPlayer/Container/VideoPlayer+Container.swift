@@ -184,11 +184,20 @@ extension VideoPlayer {
                         if viewState.isPresentingFullScreenSupplement {
                             Color.black.opacity(0.8)
                         } else {
+                            #if os(tvOS)
+                            // Helix TV: the drawer drops from the top, so shade the top while it is open.
+                            EasedGradient(
+                                colors: viewState.isPresentingSupplement ? [.black.opacity(0.85), .clear] : [.clear, .black],
+                                startPoint: viewState.isPresentingSupplement ? .top : .center,
+                                endPoint: viewState.isPresentingSupplement ? .center : .bottom
+                            )
+                            #else
                             EasedGradient(
                                 colors: [.clear, .black],
                                 startPoint: .center,
                                 endPoint: .bottom
                             )
+                            #endif
                         }
                     }
                     .isVisible(shouldPresentDimOverlay)
@@ -501,7 +510,13 @@ extension VideoPlayer {
         }
 
         private var dismissedSupplementContainerOffset: CGFloat {
+            #if os(tvOS)
+            // Helix TV: the supplement drawer lives at the top edge and is fully
+            // hidden until requested (native tvOS player behaviour).
+            0
+            #else
             min(availableSupplementHeight, viewLayout.isLarge ? 120 : 50.0 + viewLayout.edgePadding * 2)
+            #endif
         }
 
         private let compactMinimumTranslation: CGFloat = 100.0
@@ -530,7 +545,8 @@ extension VideoPlayer {
         private var supplementOffset: CGFloat = 0 {
             didSet {
                 #if os(tvOS)
-                supplementBottomAnchor?.constant = supplementOffset
+                // Negative offset = presented amount; the drawer's bottom edge hangs that far below the top.
+                supplementBottomAnchor?.constant = -supplementOffset
                 #else
                 updateSupplementLayoutBounds()
                 #endif
@@ -851,11 +867,7 @@ extension VideoPlayer {
             playerViewController.didMove(toParent: self)
             playerView.backgroundColor = .black
 
-            #if os(tvOS)
-            let compactBottomAnchor = supplementContainerView.topAnchor
-            #else
             let compactBottomAnchor = view.bottomAnchor
-            #endif
             let bottomAnchor = playerView.bottomAnchor.constraint(
                 equalTo: compactBottomAnchor,
                 constant: compactPlayerAnchorOffset
@@ -900,7 +912,7 @@ extension VideoPlayer {
             supplementOffset = -dismissedSupplementContainerOffset
 
             #if os(tvOS)
-            let bottomAnchor = supplementContainerView.topAnchor.constraint(equalTo: view.bottomAnchor, constant: supplementOffset)
+            let bottomAnchor = supplementContainerView.bottomAnchor.constraint(equalTo: view.topAnchor, constant: -supplementOffset)
             supplementBottomAnchor = bottomAnchor
             let heightAnchor = supplementContainerView.heightAnchor.constraint(equalToConstant: supplementHeight)
             supplementHeightAnchor = heightAnchor
@@ -914,7 +926,7 @@ extension VideoPlayer {
 
             let playbackControlsBottomAnchor = playbackControlsView.bottomAnchor.constraint(
                 equalTo: view.bottomAnchor,
-                constant: -dismissedSupplementContainerOffset
+                constant: -viewLayout.edgePadding
             )
             playbackControlsBottomAnchor.priority = .defaultHigh
 

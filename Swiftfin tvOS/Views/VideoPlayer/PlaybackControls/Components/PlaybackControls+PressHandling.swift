@@ -67,6 +67,18 @@ extension VideoPlayer.PlaybackControls {
             return
         }
 
+        // Helix TV: pressing up while nothing (or only the scrubber) is shown opens the
+        // top drawer (Info / Chapters / Queue), like the native player's swipe-down panel.
+        if press.type == .upArrow,
+           press.phase == .began,
+           !viewState.isPresentingSupplement,
+           viewState.presentation == .hidden || viewState.presentation == .progress,
+           viewState.supplements.isNotEmpty {
+            viewState.presentSupplementDrawer()
+            press.resolve(.handled)
+            return
+        }
+
         if !viewState.isPresentingControls, press.phase == .began {
             viewState.showControls()
             press.resolve(.handled)

@@ -221,6 +221,16 @@ extension VideoPlayer {
             return supplements.count == 1 ? supplements.first : nil
         }
 
+        /// Helix TV: open the drawer on its first (or last selected) tab.
+        func presentSupplementDrawer() {
+            guard !isGestureLocked,
+                  !isPresentingSupplement,
+                  let first = supplements.first
+            else { return }
+
+            selectedSupplementID = first.id
+        }
+
         func presentGuestSupplement(_ supplement: some VideoPlayerSupplement) {
             guard !isGestureLocked else { return }
 

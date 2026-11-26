@@ -127,7 +127,9 @@ struct ViewLayout: Equatable {
 
         #if os(tvOS)
         // Helix TV: medium landscape (episode cards) at 320pt → ~6 per screen instead of 4
-        if displayType == .landscape, size == .medium { return 320 }
+        if displayType == .landscape, size == .medium {
+            return 320
+        }
         #endif
         return value(standard: width, large: width * 1.5)
     }
