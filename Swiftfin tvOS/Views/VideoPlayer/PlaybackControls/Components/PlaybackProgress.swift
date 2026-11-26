@@ -65,9 +65,9 @@ extension VideoPlayer.PlaybackControls {
                 endPoint: .trailing
             )
             .frame(width: width, height: sliderHeight)
-            .offset(x: max(0, playheadX - width))
-            .blendMode(.plusLighter)
             .clipShape(Capsule())
+            .blendMode(.plusLighter)
+            .offset(x: max(0, playheadX - width))
             .allowsHitTesting(false)
         }
 

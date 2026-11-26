@@ -190,7 +190,8 @@ extension ItemView {
             @ContentBuilder
             var body: some View {
                 if viewLayout.isLarge {
-                    CinematicContentGroupContainer {
+                    // Helix TV: ~70% header so the season picker + first episode row show without scrolling.
+                    CinematicContentGroupContainer(heightFraction: 0.7) {
                         overlay
                             .edgePadding(.horizontal)
                             .frame(maxWidth: .infinity)

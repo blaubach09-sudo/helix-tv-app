@@ -14,15 +14,19 @@ struct CinematicContentGroupContainer<Content: View>: View {
     private var frameForParentView
 
     private let content: Content
+    private let heightFraction: CGFloat
 
-    init(@ContentBuilder content: () -> Content) {
+    /// - Parameter heightFraction: Helix TV — share of the scroll view's height the header
+    ///   reserves (1 = full screen). Item pages use less so the first row of content peeks.
+    init(heightFraction: CGFloat = 1, @ContentBuilder content: () -> Content) {
+        self.heightFraction = heightFraction
         self.content = content()
     }
 
     private var resolvedHeight: CGFloat {
         let parentHeight = frameForParentView[.scrollView, default: .zero].frame.height
 
-        return max(parentHeight - 75, 0)
+        return max(parentHeight - 75, 0) * heightFraction
     }
 
     @ContentBuilder
