@@ -12,7 +12,11 @@ struct PosterGroup<Library: PagingLibrary>: ContentGroup where Library.Element: 
 
     struct Environment: WithDefaultValue, WithViewContext {
 
+        #if os(tvOS)
+        var isHeaderButtonEnabled: Bool = false // Helix TV: titles are labels, not focus stops; rows stay the focus path
+        #else
         var isHeaderButtonEnabled: Bool = true
+        #endif
         var viewContext: ViewContext = .init()
 
         static var `default`: Self {
