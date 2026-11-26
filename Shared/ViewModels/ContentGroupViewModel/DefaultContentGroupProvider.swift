@@ -74,9 +74,11 @@ struct DefaultContentGroupProvider: ContentGroupProvider {
             posterDisplayType: .landscape
         )
 
+        #if !os(tvOS) // Helix TV: on tvOS the hero already carries Next Up
         PosterGroup(
             library: NextUpLibrary()
         )
+        #endif
 
         if Defaults[.Customization.Home.showRecentlyAdded] {
             #if os(tvOS)

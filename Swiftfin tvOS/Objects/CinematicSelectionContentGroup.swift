@@ -66,8 +66,7 @@ struct CinematicSelectionContentGroup: ContentGroup {
 
         @ContentBuilder
         var body: some View {
-            let items = viewModel.hasResumeItems ? viewModel.resumeViewModel.elements.elements : viewModel.recentlyAddedViewModel.elements
-                .elements
+            let items = viewModel.hasResumeItems ? viewModel.continueWatchingItems : Array(viewModel.recentlyAddedViewModel.elements.elements)
 
             CinematicItemSelector(
                 items: items,
@@ -135,13 +134,15 @@ final class CinematicSelectionContentGroupViewModel: ViewModel, WithRefresh {
 
         func refresh() async {
             async let resume: Void = viewModel.resumeViewModel.background.refresh()
+            async let nextUp: Void = viewModel.nextUpViewModel.background.refresh()
             async let recentlyAdded: Void = viewModel.recentlyAddedViewModel.background.refresh()
-            _ = await (resume, recentlyAdded)
+            _ = await (resume, nextUp, recentlyAdded)
         }
     }
 
     let recentlyAddedGroup: PosterGroup<RecentlyAddedLibrary>
     let resumeViewModel: PagingLibraryViewModel<ResumeItemsLibrary>
+    let nextUpViewModel: PagingLibraryViewModel<NextUpLibrary> // Helix TV: hero = Continue Watching = resume + Next Up
 
     var background: Background {
         Background(viewModel: self)
@@ -152,7 +153,15 @@ final class CinematicSelectionContentGroupViewModel: ViewModel, WithRefresh {
     }
 
     var hasResumeItems: Bool {
-        resumeViewModel.elements.isNotEmpty
+        resumeViewModel.elements.isNotEmpty || nextUpViewModel.elements.isNotEmpty
+    }
+
+    /// In-progress items first, then the next unwatched episode of each show being watched.
+    var continueWatchingItems: [ResumeItemsLibrary.Element] {
+        let resume = Array(resumeViewModel.elements.elements)
+        let seen = Set(resume.map(\.id))
+        let nextUp = nextUpViewModel.elements.elements.filter { !seen.contains($0.id) }
+        return resume + nextUp
     }
 
     var recentlyAddedViewModel: PagingLibraryViewModel<RecentlyAddedLibrary> {
@@ -164,6 +173,7 @@ final class CinematicSelectionContentGroupViewModel: ViewModel, WithRefresh {
         recentlyAddedLibrary: RecentlyAddedLibrary
     ) {
         self.resumeViewModel = PagingLibraryViewModel(library: resumeLibrary, pageSize: 20)
+        self.nextUpViewModel = PagingLibraryViewModel(library: NextUpLibrary(), pageSize: 20)
         self.recentlyAddedGroup = PosterGroup(library: recentlyAddedLibrary)
 
         super.init()
@@ -177,9 +187,10 @@ final class CinematicSelectionContentGroupViewModel: ViewModel, WithRefresh {
 
     func refresh() async {
         async let resume: Void = resumeViewModel.refresh()
+        async let nextUp: Void = nextUpViewModel.refresh()
         async let recentlyAdded: Void = recentlyAddedViewModel.refresh()
 
-        _ = await (resume, recentlyAdded)
+        _ = await (resume, nextUp, recentlyAdded)
     }
 }
 

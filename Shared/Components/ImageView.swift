@@ -146,6 +146,10 @@ struct DefaultPlaceholderView: View {
 
     @ContentBuilder
     var body: some View {
+        #if os(tvOS)
+        // Helix TV: a quiet carbon tile instead of a blurred preview; the real image fades in on top
+        Color.helixSurface
+        #else
         if let blurHash {
             Image(
                 blurHash: blurHash,
@@ -153,5 +157,6 @@ struct DefaultPlaceholderView: View {
             )?
                 .resizable()
         }
+        #endif
     }
 }
