@@ -48,6 +48,7 @@ final class MediaPlayerItem {
 
     @ObservationIgnored
     private var segments: MediaSegmentObserver?
+    private var upNext: UpNextObserver?
     @ObservationIgnored
     private(set) var mediaPreferences: MediaPlayerItemPreferences?
     @ObservationIgnored
@@ -179,6 +180,7 @@ final class MediaPlayerItem {
         guard let mediaSession, mediaSession.playbackItem === self else { return }
 
         segments = MediaSegmentObserver(item: self)
+        upNext = UpNextObserver(item: self)
 
         if baseItem.mediaType != .audio, subtitleStreams.isNotEmpty {
             replaySubtitles = MediaPlayerItemReplaySubtitles(item: self, events: mediaSession.playbackEvents)

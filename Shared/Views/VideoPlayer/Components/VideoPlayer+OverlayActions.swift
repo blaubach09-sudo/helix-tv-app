@@ -137,12 +137,22 @@ extension VideoPlayer {
             configuration.label
                 .font(.headline)
                 .fontWeight(.semibold)
+                #if os(tvOS)
+                // Helix TV: translucent glass pill; solid white only while focused (HIG: overlays over video)
+                .foregroundStyle(isFocused ? .black : .white)
+                #else
                 .foregroundStyle(.black)
+                #endif
                 .symbolRenderingMode(.monochrome)
                 .padding(.horizontal, viewLayout.isLarge ? 28 : 20)
                 .padding(.vertical, viewLayout.isLarge ? 16 : 10)
                 .frame(minHeight: 44)
+                #if os(tvOS)
+                .backport
+                .glassEffect(.regular.tint(isFocused ? .white : nil), in: .capsule)
+                #else
                 .background(.white, in: Capsule())
+                #endif
                 .contentShape(Capsule())
                 .scaleEffect(isFocused && !reduceMotion ? 1.08 : 1)
                 .shadow(color: .black.opacity(isFocused ? 0.5 : 0.2), radius: isFocused ? 12 : 4)

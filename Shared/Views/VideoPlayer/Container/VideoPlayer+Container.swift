@@ -820,6 +820,9 @@ extension VideoPlayer {
 
             #if os(tvOS)
             view.window?.addGestureRecognizer(windowMenuGesture)
+            if swipeDownGesture.view == nil {
+                view.addGestureRecognizer(swipeDownGesture)
+            }
             #endif
 
             if !didInitiallyAppear {
@@ -1125,6 +1128,25 @@ extension VideoPlayer {
             gesture.delegate = self
             return gesture
         }()
+
+        /// Helix TV: swipe down on the remote while the video is bare opens the top drawer
+        /// (Info / Chapters / Queue), matching the native tvOS player.
+        private lazy var swipeDownGesture: UISwipeGestureRecognizer = {
+            let gesture = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipeDown))
+            gesture.direction = .down
+            gesture.allowedTouchTypes = [NSNumber(value: UITouch.TouchType.indirect.rawValue)]
+            return gesture
+        }()
+
+        @objc
+        private func handleSwipeDown() {
+            guard viewState.presentation == .hidden,
+                  !viewState.isPresentingSupplement,
+                  viewState.supplements.isNotEmpty
+            else { return }
+
+            viewState.presentSupplementDrawer()
+        }
 
         override var preferredFocusEnvironments: [UIFocusEnvironment] {
             if viewState.isSupplementFocusPending {
