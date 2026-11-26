@@ -359,7 +359,11 @@ extension View {
 
     @ContentBuilder
     func subtleShadow() -> some View {
+        #if os(tvOS)
+        self // Helix TV: flat posters, system focus highlight only (HIG)
+        #else
         shadow(radius: 4, y: 2)
+        #endif
     }
 
     /// Applies the aspect ratio, corner radius, and border for the given `PosterType`

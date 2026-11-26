@@ -16,7 +16,7 @@ struct ContentGroupVStack: View {
     let groups: [any ContentGroup]
 
     private var spacing: CGFloat {
-        viewLayout.value(standard: 20, large: 60)
+        viewLayout.value(standard: 20, large: 40) // Helix TV: tighter section gaps
     }
 
     @ContentBuilder

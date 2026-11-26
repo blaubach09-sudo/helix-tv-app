@@ -68,7 +68,7 @@ struct ViewLayout: Equatable {
     }
 
     var itemSpacing: CGFloat {
-        value(standard: 10, large: 40)
+        value(standard: 10, large: 32) // Helix TV: HIG ~40pt incl. focus growth
     }
 
     var controlHeight: CGFloat {

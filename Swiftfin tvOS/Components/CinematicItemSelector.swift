@@ -73,7 +73,7 @@ struct CinematicItemSelector<Item: Poster, TopContent: View>: View {
                 ) { item, _ in
                     action(item)
                 }
-                .frame(height: 400)
+                .frame(height: 320) // Helix TV: shorter hero row
             }
         }
         .background(alignment: .top) {

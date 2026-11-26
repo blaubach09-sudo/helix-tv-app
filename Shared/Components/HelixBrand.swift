@@ -27,8 +27,7 @@ enum HelixBrand {
             return
         }
 
-        var error: Unmanaged<CFError>?
-        CTFontManagerRegisterGraphicsFont(font, &error)
+        CTFontManagerRegisterGraphicsFont(font, nil)
     }
 
     private static var isRegistered = false

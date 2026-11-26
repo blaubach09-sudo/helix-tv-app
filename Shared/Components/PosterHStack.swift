@@ -24,7 +24,7 @@ struct PosterHStack<
     private var layout: CollectionHStackLayout {
         #if os(tvOS)
         .grid(
-            columns: displayType == .landscape ? 5 : 7,
+            columns: displayType == .landscape ? 6 : 9, // Helix TV: denser rows (HIG 9-col grid)
             rows: 1,
             columnTrailingInset: 0
         )
