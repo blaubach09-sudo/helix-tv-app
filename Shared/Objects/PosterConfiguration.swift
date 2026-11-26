@@ -9,7 +9,11 @@
 @DefaultDecodable
 struct PosterConfiguration: Hashable, Storable, WithDefaultValue {
 
-    var indicators: PosterIndicator = [.favorited, .played, .progress] // Helix TV: no unplayed corner triangles (NEW badge covers fresh items)
+    var indicators: PosterIndicator = [
+        .favorited,
+        .played,
+        .progress
+    ] // Helix TV: no unplayed corner triangles (NEW badge covers fresh items)
     var unplayedStyle: UnplayedIndicatorType = .indicator
     var useSeriesLandscapeBackdrop: Bool = true
     var subtitleField: PosterSubtitleField = .none

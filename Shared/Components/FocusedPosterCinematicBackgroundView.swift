@@ -32,6 +32,7 @@ struct FocusedPosterCinematicBackgroundView: View {
                     .aspectRatio(contentMode: .fill)
             }
             .blurred()
+            .overlay { Color.helixCarbon.opacity(0.72) } // Helix TV: rows sit on carbon with a hint of the backdrop
             .ignoresSafeArea()
         }
     }
