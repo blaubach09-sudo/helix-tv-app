@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Helix TV tvOS icon + Top Shelf generator (carbon + gold, play-in-ring mark; NO company logo).
+"""Helix TV tvOS icon + Top Shelf generator (carbon + gold; Helix DNA mark only, no company wordmark).
 Writes directly into the tvOS asset catalog. Optional Michroma TTF path for the HELIXTV wordmark on Top Shelf.
   python3 Branding/make_icons.py [--font /path/Michroma-Regular.ttf]
 """
@@ -20,16 +20,15 @@ def carbon(w, h):
     glow = glow.filter(ImageFilter.GaussianBlur(radius=max(w, h)//6))
     return Image.blend(img, glow, 0.9)
 
+SRC_MARK = os.path.join(os.path.dirname(os.path.abspath(__file__)), "helix-mark-src.png")  # Helix DNA mark (Helios brand), mark only
+
 def mark(size, ring_w=None):
-    """gold play triangle inside a gold ring, transparent background, square `size`."""
-    s = size * SS; img = Image.new("RGBA", (s, s), (0, 0, 0, 0)); d = ImageDraw.Draw(img)
-    rw = (ring_w or size * 0.062) * SS; r = s * 0.42; c = s / 2
-    d.ellipse([c-r, c-r, c+r, c+r], outline=GOLD + (255,), width=int(rw))
-    # equilateral-ish play triangle, centred optically (shifted right by ~6% of r)
-    t = r * 0.58; cx = c + r * 0.06
-    pts = [(cx - t*0.75, c - t*0.85), (cx + t*0.85, c), (cx - t*0.75, c + t*0.85)]
-    d.polygon(pts, fill=GOLD + (255,))
-    return img.resize((size, size), Image.LANCZOS)
+    """Helix DNA mark fitted inside a `size` square, transparent background."""
+    src = Image.open(SRC_MARK).convert("RGBA")
+    scale = size * 0.92 / max(src.width, src.height)
+    m = src.resize((max(1, int(src.width * scale)), max(1, int(src.height * scale))), Image.LANCZOS)
+    img = Image.new("RGBA", (size, size), (0, 0, 0, 0)); img.alpha_composite(m, ((size - m.width) // 2, (size - m.height) // 2))
+    return img
 
 def wordmark(font_path, height):
     """HELIX (white) + TV (gold) in Michroma, tracked. Returns RGBA image."""
