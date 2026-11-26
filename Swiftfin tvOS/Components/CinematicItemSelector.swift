@@ -25,14 +25,17 @@ struct CinematicItemSelector<Item: Poster, TopContent: View>: View {
 
     private let action: (Item) -> Void
     private let items: [Item]
+    private let title: String?
     private let topContent: (Item) -> TopContent
 
     init(
         items: [Item],
+        title: String? = nil,
         action: @escaping (Item) -> Void,
         @ContentBuilder topContent: @escaping (Item) -> TopContent
     ) {
         self.items = items
+        self.title = title
         self.action = action
         self.topContent = topContent
     }
@@ -63,6 +66,16 @@ struct CinematicItemSelector<Item: Poster, TopContent: View>: View {
                     topContent(selectedItem)
                         .id(selectedItem.hashValue)
                         .transition(.opacity)
+                }
+
+                if let title {
+                    Text(title)
+                        .font(.caption)
+                        .fontWeight(.semibold)
+                        .textCase(.uppercase)
+                        .tracking(2)
+                        .foregroundStyle(.secondary)
+                        .edgePadding(.horizontal)
                 }
 
                 // TODO: fix intrinsic content sizing without frame

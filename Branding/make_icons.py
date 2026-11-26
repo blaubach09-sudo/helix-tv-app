@@ -52,11 +52,19 @@ def main():
     for scale, (w, h), fsz in ((1, (400, 240), 216), (2, (800, 480), 432)):
         sfx = "" if scale == 1 else "@2x"
         save(carbon(w, h), BRAND, "App Icon.imagestack", "Back.imagestacklayer", "Content.imageset", f"back{sfx}.png")
-        front = Image.new("RGBA", (fsz, fsz), (0, 0, 0, 0)); m = mark(int(fsz * 0.78)); front.alpha_composite(m, ((fsz - m.width)//2, (fsz - m.height)//2))
+        # front layer: mark on top, HELIXTV wordmark beneath (tvOS shows the app name in the system font only, so the tile carries it)
+        front = Image.new("RGBA", (fsz, fsz), (0, 0, 0, 0)); m = mark(int(fsz * 0.56)); wm = wordmark(a.font, int(fsz * 0.085))
+        gap = int(fsz * 0.05); total = m.height + (gap + wm.height if wm else 0); y = (fsz - total) // 2
+        front.alpha_composite(m, ((fsz - m.width)//2, y))
+        if wm:
+            wm = wm.resize((min(wm.width, int(fsz * 0.86)), int(wm.height * min(1, fsz * 0.86 / wm.width))), Image.LANCZOS)
+            front.alpha_composite(wm, ((fsz - wm.width)//2, y + m.height + gap))
         save(front, BRAND, "App Icon.imagestack", "Front.imagestacklayer", "Content.imageset", f"front{sfx}.png")
     # App Store icon 1280x768: Back carbon, Front 512 mark
     save(carbon(1280, 768), BRAND, "App Icon - App Store.imagestack", "Back.imagestacklayer", "Content.imageset", "1280x768-back.png")
-    front = Image.new("RGBA", (512, 512), (0, 0, 0, 0)); m = mark(400); front.alpha_composite(m, (56, 56))
+    front = Image.new("RGBA", (512, 512), (0, 0, 0, 0)); m = mark(300); wm = wordmark(a.font, 44)
+    y = (512 - (m.height + 24 + (wm.height if wm else 0))) // 2; front.alpha_composite(m, ((512 - m.width)//2, y))
+    if wm: front.alpha_composite(wm, ((512 - wm.width)//2, y + m.height + 24))
     save(front, BRAND, "App Icon - App Store.imagestack", "Front.imagestacklayer", "Content.imageset", "512.png")
     # Top Shelf (1920x720 @1x, 3840x1440 @2x) and Wide (2320x720, 4640x1440): carbon + mark + wordmark
     for name, (w, h) in (("Top Shelf Image.imageset", (1920, 720)), ("Top Shelf Image Wide.imageset", (2320, 720))):

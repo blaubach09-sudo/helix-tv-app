@@ -70,7 +70,8 @@ struct CinematicSelectionContentGroup: ContentGroup {
                 .elements
 
             CinematicItemSelector(
-                items: items
+                items: items,
+                title: viewModel.hasResumeItems ? "Continue Watching" : L10n.recentlyAdded.localizedCapitalized
             ) { item in
                 router.route(to: .item(item: item.snapshot))
             } topContent: { item in

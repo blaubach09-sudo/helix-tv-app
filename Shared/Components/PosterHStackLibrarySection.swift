@@ -122,6 +122,8 @@ where Library.Element: LibraryElement, Library.Element: Poster {
                     size: group.posterSize
                 ) { element, namespace in
                     element.libraryDidSelectElement(router: router, in: namespace)
+                } onReachedTrailingEdge: {
+                    viewModel.send(.getNextPage)
                 }
                 .withViewContext(.isThumb)
                 .focusSection()
