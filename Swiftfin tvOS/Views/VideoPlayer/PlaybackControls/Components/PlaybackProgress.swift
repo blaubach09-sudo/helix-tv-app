@@ -41,6 +41,45 @@ extension VideoPlayer.PlaybackControls {
             isScrubbing ? 16 : 10
         }
 
+        // MARK: - Helix playhead + trail
+
+        private let trailLength: CGFloat = 180
+
+        private var playheadSize: CGFloat {
+            isScrubbing ? 52 : 30
+        }
+
+        private var playheadX: CGFloat {
+            guard sliderSize.width.isFinite, sliderSize.width > 0 else { return 0 }
+
+            return sliderSize.width * scrubbedProgress
+        }
+
+        /// A soft, brighter gold glow that fades in behind the playhead along the played segment.
+        @ContentBuilder
+        private var helixTrail: some View {
+            let width = min(trailLength, max(0, playheadX))
+            LinearGradient(
+                colors: [.clear, Color.white.opacity(0.65)],
+                startPoint: .leading,
+                endPoint: .trailing
+            )
+            .frame(width: width, height: sliderHeight)
+            .offset(x: max(0, playheadX - width))
+            .blendMode(.plusLighter)
+            .clipShape(Capsule())
+            .allowsHitTesting(false)
+        }
+
+        /// The Helix mark sits on the track like a pin (its foot on the track centre) so it
+        /// never collides with the timestamp row below.
+        @ContentBuilder
+        private var helixPlayhead: some View {
+            HelixPlayhead(size: playheadSize, isActive: isScrubbing)
+                .offset(x: playheadX - playheadSize / 2, y: -(playheadSize / 2) + sliderHeight / 2 + 2)
+                .allowsHitTesting(false)
+        }
+
         private var isScrubbing: Bool {
             viewState.isScrubbing
         }
@@ -143,6 +182,12 @@ extension VideoPlayer.PlaybackControls {
             .frame(height: sliderHeight)
             .trackingSize($sliderSize)
             .foregroundStyle(mediaSession.canSeek ? Color.helixGold : Color.gray)
+            .overlay(alignment: .leading) {
+                helixTrail
+            }
+            .overlay(alignment: .leading) {
+                helixPlayhead
+            }
             .disabled(!mediaSession.canSeek)
         }
 
