@@ -18,7 +18,7 @@ import SwiftUI
 @MainActor
 final class UpNextObserver {
 
-    static let leadTime: Duration = .seconds(20)
+    static let leadTime: Duration = .seconds(10)
 
     private let store: VideoPlayerOverlayActionStore
     private weak var item: MediaPlayerItem?
