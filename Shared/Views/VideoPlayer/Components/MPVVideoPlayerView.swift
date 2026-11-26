@@ -14,6 +14,12 @@ struct MPVVideoPlayerView: View {
     @Environment(\.scenePhase)
     private var scenePhase
 
+    #if os(tvOS)
+    /// Helix TV: lift captions above the transport bar while it is showing, like the native player.
+    @Environment(VideoPlayer.ViewState.self)
+    private var viewState: VideoPlayer.ViewState?
+    #endif
+
     let player: MPVPlayer
     let textSubtitles: TextSubtitlePresentation
     let layout: VideoPlayer.VideoLayout
@@ -39,6 +45,21 @@ struct MPVVideoPlayerView: View {
         return scenePhase == .active
     }
 
+    private var captionBottomInset: CGFloat {
+        #if os(tvOS)
+        guard !isPictureInPictureActive, let viewState else { return 0 }
+
+        switch viewState.presentation {
+        case .progress, .controls:
+            return 130
+        case .hidden, .supplement:
+            return 0
+        }
+        #else
+        return 0
+        #endif
+    }
+
     @ContentBuilder
     var body: some View {
         videoSurface
@@ -49,6 +70,8 @@ struct MPVVideoPlayerView: View {
             .overlay {
                 if !isPictureInPictureActive, let snapshot = textSubtitles.snapshot {
                     TextSubtitleOverlay(snapshot: snapshot, videoLayout: layout, reportCaptions: nil)
+                        .padding(.bottom, captionBottomInset)
+                        .animation(.easeOut(duration: 0.2), value: captionBottomInset)
                 }
             }
             .modifier(

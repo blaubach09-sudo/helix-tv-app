@@ -33,11 +33,22 @@ extension SeriesEpisodeContentGroup {
             }
         }
 
+        /// Helix TV: "S1:E12  ·  Oct 9, 2018" so the air date is visible on the row without
+        /// opening the episode (runtime already sits in the series header).
+        private var episodeEyebrow: String {
+            let parts = [
+                episode.seasonEpisodeLabel ?? episode.episodeLocator,
+                episode.premiereDateLabel,
+            ].compactMap(\.self)
+
+            return parts.isEmpty ? .emptyDash : parts.joined(separator: "  ·  ")
+        }
+
         @ContentBuilder
         var body: some View {
             EpisodeCardLayout(
                 header: episode.displayTitle,
-                subHeader: episode.episodeLocator ?? .emptyDash,
+                subHeader: episodeEyebrow,
                 content: episodeContent,
                 artworkAction: {
                     guard let intent = episode.getPlaybackIntent(userSession: nil) else {
