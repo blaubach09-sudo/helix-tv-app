@@ -25,6 +25,9 @@ struct SearchView: View {
     private var focusedFilter: FilterTrack.FocusTarget?
     #endif
 
+    @Router
+    private var router
+
     @State
     private var viewModel = SearchViewModel()
 
@@ -36,18 +39,35 @@ struct SearchView: View {
 
     @ContentBuilder
     private var suggestionsView: some View {
+        #if os(tvOS)
+        // Helix TV: suggestions as a poster row (click opens the item) instead of plain text.
+        VStack(alignment: .leading, spacing: viewLayout.itemSpacing / 2) {
+            Text("Suggestions")
+                .font(.title3)
+                .fontWeight(.semibold)
+                .foregroundStyle(.secondary)
+                .edgePadding(.horizontal)
+
+            PosterHStack(
+                elements: viewModel.suggestions,
+                displayType: .portrait,
+                size: .small
+            ) { item, namespace in
+                item.libraryDidSelectElement(router: router, in: namespace)
+            }
+            .focusSection()
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        #else
         VStack(spacing: 20) {
             ForEach(viewModel.suggestions) { item in
                 Button(item.displayTitle) {
                     viewModel.query = item.displayTitle
                 }
-                #if os(tvOS)
-                .buttonStyle(.plain)
-                    .foregroundStyle(.secondary)
-                #endif
             }
         }
         .multilineTextAlignment(.center)
+        #endif
     }
 
     @ContentBuilder
