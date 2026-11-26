@@ -123,7 +123,7 @@ where Library.Element: LibraryElement, Library.Element: Poster {
                 ) { element, namespace in
                     element.libraryDidSelectElement(router: router, in: namespace)
                 } onReachedTrailingEdge: {
-                    viewModel.send(.getNextPage)
+                    viewModel.getNextPage()
                 }
                 .withViewContext(.isThumb)
                 .focusSection()

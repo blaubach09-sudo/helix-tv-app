@@ -20,7 +20,7 @@ struct PosterHStack<
     let displayType: PosterDisplayType
     let size: PosterDisplayType.Size
     let action: (Data.Element, Namespace.ID) -> Void
-    var onReachedTrailingEdge: (() -> Void)? = nil // Helix TV: load the next page as the user reaches the end of a row
+    var onReachedTrailingEdge: (() -> Void)? // Helix TV: load the next page as the user reaches the end of a row
 
     private var layout: CollectionHStackLayout {
         #if os(tvOS)
