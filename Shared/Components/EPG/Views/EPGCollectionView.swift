@@ -110,7 +110,7 @@ extension EPGCollectionView {
 
         private weak var collectionView: UICollectionView?
 
-        private var accentColor: Color = .jellyfinPurple
+        private var accentColor: Color = .helixGold
         private var dataSource: UICollectionViewDiffableDataSource<String, ItemID>?
         private var didRequestNextPage = false
         private var lastPaginationVerticalOffset: CGFloat?

@@ -1101,6 +1101,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Helix TV";
 				PRODUCT_BUNDLE_IDENTIFIER = org.jellyfin.swiftfin.screenshots;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
@@ -1322,6 +1323,7 @@
 				EXCLUDED_ARCHS = "";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Swiftfin/Resources/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Helix TV";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
 				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1362,6 +1364,7 @@
 				EXCLUDED_ARCHS = "";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Swiftfin/Resources/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Helix TV";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.entertainment";
 				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1406,6 +1409,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Helix TV";
 				PRODUCT_BUNDLE_IDENTIFIER = org.jellyfin.swiftfin.screenshots;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;

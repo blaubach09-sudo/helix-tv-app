@@ -19,11 +19,11 @@ struct AboutAppView: View {
 
     @ContentBuilder
     var body: some View {
-        Form(image: .jellyfinBlobBlue) {
+        Form(image: .helixMark) {
             if !viewLayout.isLarge {
                 Section {
                     VStack(alignment: .center, spacing: 10) {
-                        Image(.jellyfinBlobBlue)
+                        Image(.helixMark)
                             .resizable()
                             .aspectRatio(1, contentMode: .fit)
                             .frame(height: 150)

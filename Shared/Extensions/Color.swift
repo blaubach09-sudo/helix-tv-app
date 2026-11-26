@@ -12,6 +12,11 @@ extension Color {
 
     static let jellyfinPurple = Color(red: 172 / 255, green: 92 / 255, blue: 195 / 255, opacity: 1)
 
+    // Helix TV brand (carbon + gold, same tokens as Helios)
+    static let helixGold = Color(red: 243 / 255, green: 170 / 255, blue: 32 / 255, opacity: 1)
+    static let helixCarbon = Color(red: 11 / 255, green: 10 / 255, blue: 9 / 255, opacity: 1)
+    static let helixSurface = Color(red: 22 / 255, green: 19 / 255, blue: 17 / 255, opacity: 1)
+
     var uiColor: UIColor {
         UIColor(self)
     }

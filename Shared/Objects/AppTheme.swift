@@ -14,7 +14,7 @@ struct AppTheme: DynamicProperty {
     struct Value: Equatable {
 
         var appearance: AppAppearance = .system
-        var accentColor: Color = .jellyfinPurple
+        var accentColor: Color = .helixGold
 
         func resolved(colorScheme: ColorScheme, contrast: ColorSchemeContrast) -> Value {
             Value(

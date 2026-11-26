@@ -20,7 +20,7 @@ enum ColorPickerDefaults: CaseIterable, Displayable {
     var color: Color {
         switch self {
         case .jellyfin:
-            .jellyfinPurple
+            .helixGold
         case .red:
             .red
         case .orange:
