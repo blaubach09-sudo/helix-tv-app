@@ -13,6 +13,7 @@ import UIKit
 struct SwiftfinApp: App {
 
     init() {
+        HelixBrand.registerFonts()
         Self.configure()
 
         UIScrollView.appearance().keyboardDismissMode = .onDrag

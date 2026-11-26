@@ -46,10 +46,7 @@ struct SplitLoginWindowView<Leading: View, Trailing: View>: View {
         }
         .toolbar {
             ToolbarItem(placement: .principal) {
-                Image(uiImage: .helixMark)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 100)
+                HelixLockup(height: 44)
             }
             ToolbarItem(placement: .topBarTrailing) {
                 if isLoading {

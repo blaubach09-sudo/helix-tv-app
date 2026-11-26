@@ -328,10 +328,7 @@ struct SelectUserView: View {
         }
         .toolbar {
             ToolbarItem(placement: .principal) {
-                Image(.helixMark)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: viewLayout.value(standard: 30, large: 100))
+                HelixLockup(height: viewLayout.value(standard: 28, large: 44))
             }
 
             #if os(iOS)

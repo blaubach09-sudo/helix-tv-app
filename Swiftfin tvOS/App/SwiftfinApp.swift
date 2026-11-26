@@ -12,6 +12,7 @@ import SwiftUI
 struct SwiftfinApp: App {
 
     init() {
+        HelixBrand.registerFonts()
         Self.configure()
 
         UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor.clear]
