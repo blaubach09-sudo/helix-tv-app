@@ -46,6 +46,16 @@ struct PosterIndicatorsOverlay: View {
             (item.userData?.playbackPositionTicks ?? 0) == 0
     }
 
+    /// Helix TV: added within the last 7 days and not watched yet
+    private var showsNewIndicator: Bool {
+        guard item.type == .episode || item.type == .movie,
+              item.userData?.isPlayed == false,
+              let created = item.dateCreated
+        else { return false }
+
+        return created > Date.now.addingTimeInterval(-7 * 24 * 3600)
+    }
+
     private var showsProgressIndicator: Bool {
         indicators.contains(.progress) &&
             item.progressLabel != nil
@@ -93,6 +103,19 @@ struct PosterIndicatorsOverlay: View {
     var body: some View {
         VStack(spacing: 0) {
             ZStack {
+                if showsNewIndicator {
+                    Quadrant(.topLeading) {
+                        QuadrantItem(color: .helixGold) {
+                            Text("NEW")
+                                .font(.caption)
+                                .fontWeight(.heavy)
+                                .accessibilityLabel("New")
+                        }
+                    }
+                    .frame(height: indicatorSize)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+                }
+
                 if showsUnplayedIndicator {
                     UnplayedIndicator(
                         count: posterConfiguration.unplayedStyle == .count ? item.userData?.unplayedItemCount : nil

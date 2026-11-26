@@ -163,7 +163,7 @@ enum VideoPlayerActionButton: String, CaseIterable, Displayable, Equatable, Iden
         #if os(iOS)
         allCases.filter { $0 != .playbackDestination || Defaults[.Experimental.chromecast] }
         #elseif os(tvOS)
-        allCases.filter { $0 != .pictureInPicture }
+        allCases // Helix TV: tvOS supports PiP; let the player decide (button only shows when the player provides it)
         #else
         allCases
         #endif

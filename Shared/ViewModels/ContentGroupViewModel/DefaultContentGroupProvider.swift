@@ -67,6 +67,13 @@ struct DefaultContentGroupProvider: ContentGroupProvider {
         )
         #endif
 
+        // Helix TV: newest unplayed episodes, ahead of Next Up
+        PosterGroup(
+            id: "helix-new-episodes",
+            library: NewEpisodesLibrary(),
+            posterDisplayType: .landscape
+        )
+
         PosterGroup(
             library: NextUpLibrary()
         )
