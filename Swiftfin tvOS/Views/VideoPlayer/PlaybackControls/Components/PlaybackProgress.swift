@@ -46,7 +46,7 @@ extension VideoPlayer.PlaybackControls {
         private let trailLength: CGFloat = 180
 
         private var playheadSize: CGFloat {
-            isScrubbing ? 52 : 30
+            isScrubbing ? 60 : 42
         }
 
         private var playheadX: CGFloat {
@@ -71,12 +71,11 @@ extension VideoPlayer.PlaybackControls {
             .allowsHitTesting(false)
         }
 
-        /// The Helix mark sits on the track like a pin (its foot on the track centre) so it
-        /// never collides with the timestamp row below.
+        /// The Helix mark rides the track, centred on it like a native playhead.
         @ContentBuilder
         private var helixPlayhead: some View {
             HelixPlayhead(size: playheadSize, isActive: isScrubbing)
-                .offset(x: playheadX - playheadSize / 2, y: -(playheadSize / 2) + sliderHeight / 2 + 2)
+                .offset(x: playheadX - playheadSize / 2)
                 .allowsHitTesting(false)
         }
 
@@ -206,7 +205,7 @@ extension VideoPlayer.PlaybackControls {
 
         @ContentBuilder
         var body: some View {
-            VStack(spacing: 10) {
+            VStack(spacing: 18) {
                 if mediaSession.item.isLiveStream {
                     liveIndicator
                         .frame(maxWidth: .infinity, alignment: .leading)

@@ -117,13 +117,7 @@ private struct ChapterPosterLabel: View {
 
             Text(chapter.startSeconds, format: .runtime)
                 .font(viewLayout.value(standard: .subheadline.weight(.semibold), large: .caption))
-                .foregroundStyle(Color(UIColor.systemBlue))
-                .padding(.horizontal, 4)
-                .background {
-                    Color(.darkGray)
-                        .opacity(0.2)
-                        .cornerRadius(4)
-                }
+                .foregroundStyle(.secondary)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }

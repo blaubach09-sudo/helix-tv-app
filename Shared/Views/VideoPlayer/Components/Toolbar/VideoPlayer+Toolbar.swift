@@ -99,8 +99,12 @@ extension VideoPlayer.PlaybackControls.Toolbar {
         var item: BaseItemDto
 
         private var _titleSubtitle: (title: String, subtitle: String?) {
-            if item.type == .episode, let parentTitle = item.parentTitle {
-                return (title: parentTitle, subtitle: item.seasonEpisodeLabel)
+            // Helix TV: the episode name is the headline; series + SxxExx is the eyebrow.
+            if item.type == .episode {
+                let eyebrow = [item.parentTitle, item.seasonEpisodeLabel]
+                    .compactMap(\.self)
+                    .joined(separator: "  ·  ")
+                return (title: item.displayTitle, subtitle: eyebrow.isEmpty ? nil : eyebrow)
             }
 
             return (title: item.displayTitle, subtitle: nil)
