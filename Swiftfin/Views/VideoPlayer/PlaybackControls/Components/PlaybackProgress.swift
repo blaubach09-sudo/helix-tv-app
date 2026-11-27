@@ -75,7 +75,7 @@ extension VideoPlayer.PlaybackControls {
         private let trailLength: CGFloat = 90
 
         private var playheadSize: CGFloat {
-            isScrubbing ? 34 : 24
+            isScrubbing ? 44 : 28
         }
 
         private var playheadX: CGFloat {
