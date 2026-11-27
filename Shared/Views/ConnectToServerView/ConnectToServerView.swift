@@ -120,14 +120,45 @@ struct ConnectToServerView: View {
         }
     }
 
+    /// Helix TV: the family server is one tap; the URL field below stays for anything else
+    @ContentBuilder
+    private var helixServerSection: some View {
+        Section {
+            Button {
+                isURLFocused = false
+                url = HelixBrand.familyServerURL
+                viewModel.connect(url: HelixBrand.familyServerURL)
+            } label: {
+                HStack(spacing: 12) {
+                    Image(.helixMark)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(height: 28)
+                    Text("Connect to Helix TV")
+                        .fontWeight(.semibold)
+                    Spacer()
+                    Image(systemName: "chevron.right")
+                        .foregroundStyle(.secondary)
+                }
+            }
+            .disabled(viewModel.state == .connecting)
+        } footer: {
+            Text("Sign in with the name and password you were given.")
+        }
+    }
+
     @ContentBuilder
     private var contentView: some View {
         #if os(iOS)
         List {
+            helixServerSection
+
             connectSection
 
             localServersSection
         }
+        .scrollContentBackground(.hidden)
+        .background(Color.helixCarbon.ignoresSafeArea())
         .toolbarTitleDisplayMode(.inline)
         .navigationBarCloseButton(disabled: viewModel.state == .connecting) {
             router.dismiss()

@@ -14,6 +14,9 @@ enum HelixBrand {
 
     static let wordmarkFontName = "Michroma"
 
+    /// The family server. One tap on the connect screen instead of typing a URL.
+    static let familyServerURL = "https://helixcloud4.tail20db2e.ts.net:8443"
+
     /// Registers bundled brand fonts once. Safe to call repeatedly.
     static func registerFonts() {
         guard !isRegistered else { return }

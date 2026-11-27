@@ -227,6 +227,35 @@ extension SeriesEpisodeContentGroup {
 
         @ContentBuilder
         var body: some View {
+            if viewLayout.usesCompactDetail {
+                // Helix TV: phone list row — thumb left, title/overview right
+                HStack(alignment: .top, spacing: 12) {
+                    artworkButton
+                        .posterAspectRatio(.landscape, contentMode: .fit)
+                        .frame(width: 150)
+
+                    Button(action: contentAction) {
+                        EpisodeMetadataView(
+                            header: header,
+                            subHeader: subHeader,
+                            content: content
+                        )
+                        .accessibilityElement(children: .ignore)
+                        .accessibilityLabel(contentAccessibilityLabel)
+                        .accessibilityHint(contextMenuItem == nil ? "" : L10n.posterAccessibilityDetailsHint)
+                    }
+                    .buttonStyle(.plain)
+                    .foregroundStyle(.primary, .secondary)
+                    .focused($focusedElement, equals: .content)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+            } else {
+                cardBody
+            }
+        }
+
+        @ContentBuilder
+        private var cardBody: some View {
             VStack(alignment: .leading) {
                 artworkButton
                     .posterAspectRatio(.landscape, contentMode: .fit)
@@ -264,6 +293,9 @@ extension SeriesEpisodeContentGroup {
 
     private struct EpisodeMetadataView: View {
 
+        @AdaptiveLayout
+        private var viewLayout
+
         let header: String
         let subHeader: String
         let content: String
@@ -285,7 +317,7 @@ extension SeriesEpisodeContentGroup {
                     .font(.caption)
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.leading)
-                    .lineLimit(3, reservesSpace: true)
+                    .lineLimit(3, reservesSpace: !viewLayout.usesCompactDetail) // Helix TV: phone rows hug their text
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }

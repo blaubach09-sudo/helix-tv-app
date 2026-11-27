@@ -160,6 +160,27 @@ extension SeriesEpisodeContentGroup {
 
         @ContentBuilder
         var body: some View {
+            if viewLayout.usesCompactDetail {
+                // Helix TV: on a phone the season reads as a vertical list (thumb left, text right), like Plex
+                ContentGroupSection {
+                    LazyVStack(alignment: .leading, spacing: 14) {
+                        ForEach(elements) { element in
+                            content(element)
+                        }
+                    }
+                    .padding(.horizontal, viewLayout.edgePadding)
+                } header: {
+                    header
+                }
+                .accessibilityElement(children: .contain)
+                .accessibilityLabel(L10n.seasons)
+            } else {
+                cardRow
+            }
+        }
+
+        @ContentBuilder
+        private var cardRow: some View {
             ContentGroupSection {
                 CollectionHStack(
                     uniqueElements: elements,
