@@ -31,7 +31,7 @@ is harmless (prebuilt binary, no symbols).
   plan = invite it as an App Store Connect user (Customer Support role) and add to Helix Internal; same for family Apple IDs.
 
 ## Current state (2026-11-27 00:50)
-- TestFlight: tvOS 1.4.1 (70) and iOS 1.5.0 (100) in "Helix Internal". Both are BEHIND the branch (phone player pass,
+- TestFlight: tvOS + iOS 1.5.0 (101) uploaded 2026-11-27 (current with the branch as of commit 32188f0).
   merged Continue Watching, one-card New Episodes, image snapping). Next upload: bump CURRENT_PROJECT_VERSION to 101 and run
   `Tools/upload-testflight.sh tvos` and `... ios`.
 - Pending: Brandon accepts the App Store Connect invite (blaubach09@gmail.com) → add to Helix Internal; Chelsey/Ryan already users.
