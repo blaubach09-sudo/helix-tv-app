@@ -1,0 +1,20 @@
+# Helix TV — distribution (TestFlight)
+
+Set up 2026-11-26 with Brandon at the keyboard.
+
+- Apple team: Market Mavens LLC (GYWYUZLMZN), paid account (dev profiles valid 1 year).
+- App ID registered: `com.helixmedia360.helixtv` (explicit, no capabilities). The iOS target's Wi-Fi-info entitlement was dropped so the team profile signs it.
+- App Store Connect record: **Helix TV**, app id 6839888303, platforms iOS + tvOS, SKU `helixtv`, primary language English (U.S.).
+  https://appstoreconnect.apple.com/apps/6839888303
+- Xcode on the mini is signed in to the team (Xcode > Settings > Accounts), so archives/uploads run from the mini without Brandon. Build locally — never GitHub Actions.
+
+## Devices (dev loop, no TestFlight needed)
+- Apple TV "Living Room" paired (UDID eab8f268f46c389b1d958b5846f1c12c1744d6f9).
+- iPhone "Brandons Iphone" (iPhone 16 Pro Max) paired over USB 2026-11-26, UDID 00008140-001A28840A0B001C; Wi-Fi installs after that.
+- 3 Apple TVs in the house (4 soon) → they get the app via TestFlight, not pairing.
+
+## Still to do before the first TestFlight build
+1. 1024px App Store icons (iOS + tvOS layered), no transparency — Helix mark.
+2. Phone branding/density pass (stock Swiftfin phone layouts today).
+3. Archive + upload iOS and tvOS from the mini (xcodebuild archive / -exportArchive with method app-store-connect, or Xcode Organizer).
+4. TestFlight: internal group for Brandon; public link for family (first external build gets a short Apple review). Builds expire after 90 days → re-upload at least quarterly.
