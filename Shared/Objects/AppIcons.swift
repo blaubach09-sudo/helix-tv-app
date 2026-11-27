@@ -8,17 +8,11 @@
 
 enum AppIcon: String, CaseIterable, Displayable, Identifiable {
 
-    case jellyfin
-    case red
-    case orange
-    case yellow
-    case green
-    case blue
-
-    private static let prefix = "AppIcon-dark-"
+    /// Helix TV ships one icon: the Helix mark on carbon.
+    case helix
 
     var iconName: String {
-        Self.prefix + rawValue
+        "AppIcon-helix"
     }
 
     var id: String {
@@ -26,34 +20,14 @@ enum AppIcon: String, CaseIterable, Displayable, Identifiable {
     }
 
     var alternateIconName: String? {
-        self == .blue ? nil : iconName
+        nil
     }
 
     var displayTitle: String {
-        switch self {
-        case .jellyfin:
-            L10n.jellyfin
-        case .red:
-            L10n.red
-        case .orange:
-            L10n.orange
-        case .yellow:
-            L10n.yellow
-        case .green:
-            L10n.green
-        case .blue:
-            L10n.blue
-        }
+        "Helix TV"
     }
 
     static func resolve(alternateIconName: String?) -> Self {
-        guard let alternateIconName,
-              alternateIconName.hasPrefix(prefix)
-        else {
-            return .blue
-        }
-
-        let rawValue = alternateIconName.dropFirst(prefix.count)
-        return Self(rawValue: String(rawValue)) ?? .blue
+        .helix
     }
 }

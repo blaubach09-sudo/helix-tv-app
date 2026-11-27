@@ -149,6 +149,13 @@ struct ConnectToServerView: View {
     var body: some View {
         contentView
             .navigationTitle(L10n.connect)
+            #if os(iOS)
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    HelixLockup(height: 28)
+                }
+            }
+            #endif
             .interactiveDismissDisabled(viewModel.state == .connecting)
             .onFirstAppear {
                 isURLFocused = true
