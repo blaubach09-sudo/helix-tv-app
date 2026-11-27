@@ -22,7 +22,13 @@ unknown option". Fix = run with PATH=/usr/bin:/bin:/usr/sbin:/sbin (the script d
 is harmless (prebuilt binary, no symbols).
 
 - tvOS build 1 uploaded 2026-11-26 22:46 as version 1.4.1 (70) — upstream Swiftfin's tvOS numbers; iOS target is 1.0 (1).
-  Both targets should move to one shared version/build before the next upload.
+- Both targets now share MARKETING_VERSION 1.5.0 / CURRENT_PROJECT_VERSION 100 (bump the build number before every upload).
+- iOS build uploaded 2026-11-26 23:03 as 1.5.0 (100). Fix needed first: the project-level Release config and the "Swiftfin iOS"
+  Release config did not include XcodeConfig/Shared.xcconfig (no team) and hardcoded org.jellyfin.swiftfin — both fixed in the pbxproj.
+- TestFlight groups: "Helix Internal" (internal, automatic distribution, tester = the App Store Connect account holder
+  info@helixmedia360.com) and "Helix Family" (external, EMPTY — adding a build there triggers Beta App Review, which asks for a
+  reviewer sign-in to the Jellyfin server; decided not to do that). Apple TVs use the personal Apple ID blaubach09@gmail.com →
+  plan = invite it as an App Store Connect user (Customer Support role) and add to Helix Internal; same for family Apple IDs.
 
 ## Still to do before the first TestFlight build
 1. 1024px App Store icons (iOS + tvOS layered), no transparency — Helix mark.
