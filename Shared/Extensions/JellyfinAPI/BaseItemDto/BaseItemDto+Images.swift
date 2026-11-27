@@ -14,6 +14,10 @@ import UIKit
 @MainActor
 extension BaseItemDto {
 
+    static func snappedImageWidth(_ width: Int) -> Int {
+        width <= 500 ? 500 : width
+    }
+
     func imageSource(
         _ type: ImageType,
         itemID: String?,
@@ -39,8 +43,10 @@ extension BaseItemDto {
         // TODO: put into environment?
         let scale = UITraitCollection.current.displayScale
 
+        // Helix TV: snap small requests to the 500 px size the nightly warm pre-renders on the server, so phone and
+        // TV share one cached rendition instead of each width forcing a fresh resize on the NAS.
         let parameters = Paths.GetItemImageParameters(
-            maxWidth: environment.maxWidth.map { Int($0 * scale) },
+            maxWidth: environment.maxWidth.map { Self.snappedImageWidth(Int($0 * scale)) },
             maxHeight: environment.maxHeight.map { Int($0 * scale) },
             quality: environment.quality.map { clamp($0, min: 1, max: 100) },
             tag: tag,
