@@ -59,8 +59,10 @@ struct DefaultContentGroupProvider: ContentGroupProvider {
 
         cinematicSelectionContentGroup
         #else
+        // Helix TV: Continue Watching = in-progress + Next Up, like the TV hero (never empties)
         PosterGroup(
-            library: ResumeItemsLibrary(mediaTypes: [.video]),
+            id: "helix-continue-watching",
+            library: ContinueWatchingLibrary(),
             posterDisplayType: .landscape,
             posterSize: .medium,
             _viewContext: .isInResume
@@ -74,11 +76,7 @@ struct DefaultContentGroupProvider: ContentGroupProvider {
             posterDisplayType: .landscape
         )
 
-        #if !os(tvOS) // Helix TV: on tvOS the hero already carries Next Up
-        PosterGroup(
-            library: NextUpLibrary()
-        )
-        #endif
+        // Helix TV: Next Up now lives inside Continue Watching on both platforms
 
         if Defaults[.Customization.Home.showRecentlyAdded] {
             #if os(tvOS)
