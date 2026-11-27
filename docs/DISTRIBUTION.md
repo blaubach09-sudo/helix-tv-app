@@ -30,11 +30,12 @@ is harmless (prebuilt binary, no symbols).
   reviewer sign-in to the Jellyfin server; decided not to do that). Apple TVs use the personal Apple ID blaubach09@gmail.com →
   plan = invite it as an App Store Connect user (Customer Support role) and add to Helix Internal; same for family Apple IDs.
 
-## Still to do before the first TestFlight build
-1. 1024px App Store icons (iOS + tvOS layered), no transparency — Helix mark.
-2. Phone branding/density pass (stock Swiftfin phone layouts today).
-3. Archive + upload iOS and tvOS from the mini (xcodebuild archive / -exportArchive with method app-store-connect, or Xcode Organizer).
-4. TestFlight: internal group for Brandon; public link for family (first external build gets a short Apple review). Builds expire after 90 days → re-upload at least quarterly.
+## Current state (2026-11-27 00:50)
+- TestFlight: tvOS 1.4.1 (70) and iOS 1.5.0 (100) in "Helix Internal". Both are BEHIND the branch (phone player pass,
+  merged Continue Watching, one-card New Episodes, image snapping). Next upload: bump CURRENT_PROJECT_VERSION to 101 and run
+  `tools/upload-testflight.sh tvos` and `... ios`.
+- Pending: Brandon accepts the App Store Connect invite (blaubach09@gmail.com) → add to Helix Internal; Chelsey/Ryan already users.
+- Later: 1024 App Store marketing icon only matters for a store listing, not TestFlight; family Apple IDs = more internal testers.
 
 ## Device notes (2026-11-26)
 - iPhone: `xcrun devicectl device capture screenshot --device <udid> --destination x.png` works when unlocked and on USB or the
