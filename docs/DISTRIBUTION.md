@@ -35,3 +35,10 @@ is harmless (prebuilt binary, no symbols).
 2. Phone branding/density pass (stock Swiftfin phone layouts today).
 3. Archive + upload iOS and tvOS from the mini (xcodebuild archive / -exportArchive with method app-store-connect, or Xcode Organizer).
 4. TestFlight: internal group for Brandon; public link for family (first external build gets a short Apple review). Builds expire after 90 days → re-upload at least quarterly.
+
+## Device notes (2026-11-26)
+- iPhone: `xcrun devicectl device capture screenshot --device <udid> --destination x.png` works when unlocked and on USB or the
+  same Wi-Fi as the mini; there is no tap/key automation for iPhone (unlike the Apple TV via pyatv). Deep links
+  (`swiftfin://<serverId>/<userId>/item/<id>`) exist but did not navigate when launched through devicectl.
+- Screenshots fail while video plays (both platforms).
+- Art speed: through Tailscale Funnel ~0.75 s per image; direct over the tailnet 0.06–0.15 s. Phones should run Tailscale.
