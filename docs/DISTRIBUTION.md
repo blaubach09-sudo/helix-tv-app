@@ -13,6 +13,17 @@ Set up 2026-11-26 with Brandon at the keyboard.
 - iPhone "Brandons Iphone" (iPhone 16 Pro Max) paired over USB 2026-11-26, UDID 00008140-001A28840A0B001C; Wi-Fi installs after that.
 - 3 Apple TVs in the house (4 soon) → they get the app via TestFlight, not pairing.
 
+## Uploading (done from the mini)
+`tools/upload-testflight.sh tvos|ios` = archive to ~/Library/Developer/Xcode/Archives/<date>/ + export/upload with
+`~/.helixtv/export/ExportOptions.plist` (method app-store-connect, destination upload, team GYWYUZLMZN, automatic signing).
+GOTCHA (2026-11-26): `xcodebuild -exportArchive` failed with "Copy failed" three times. Root cause: the IPA step runs
+`/usr/bin/rsync` (Apple openrsync), which spawns the *server* side from PATH → Homebrew rsync 3.5.0 → "--extended-attributes:
+unknown option". Fix = run with PATH=/usr/bin:/bin:/usr/sbin:/sbin (the script does). The dSYM warning for Libmpv.framework
+is harmless (prebuilt binary, no symbols).
+
+- tvOS build 1 uploaded 2026-11-26 22:46 as version 1.4.1 (70) — upstream Swiftfin's tvOS numbers; iOS target is 1.0 (1).
+  Both targets should move to one shared version/build before the next upload.
+
 ## Still to do before the first TestFlight build
 1. 1024px App Store icons (iOS + tvOS layered), no transparency — Helix mark.
 2. Phone branding/density pass (stock Swiftfin phone layouts today).
