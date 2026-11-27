@@ -69,10 +69,12 @@
 	<true/>
 	<key>UILaunchScreen</key>
 	<dict>
+		<key>UIColorName</key>
+		<string>HelixLaunchBackground</string>
 		<key>UIImageName</key>
-		<string>jellyfin-blob-blue</string>
+		<string>helix-launch</string>
 		<key>UIImageRespectsSafeAreaInsets</key>
-		<true/>
+		<false/>
 	</dict>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
