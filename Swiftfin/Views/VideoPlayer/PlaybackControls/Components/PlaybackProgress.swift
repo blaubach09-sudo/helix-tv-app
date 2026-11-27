@@ -70,6 +70,44 @@ extension VideoPlayer.PlaybackControls {
             viewState.isScrubbing
         }
 
+        // MARK: - Helix playhead + trail (phone sizes; the tvOS player has the same treatment)
+
+        private let trailLength: CGFloat = 90
+
+        private var playheadSize: CGFloat {
+            isScrubbing ? 34 : 24
+        }
+
+        private var playheadX: CGFloat {
+            guard sliderSize.width.isFinite, sliderSize.width > 0 else { return 0 }
+
+            return sliderSize.width * scrubbedProgress
+        }
+
+        /// A soft, brighter gold glow that fades in behind the playhead along the played segment.
+        @ContentBuilder
+        private var helixTrail: some View {
+            let width = min(trailLength, max(0, playheadX))
+            LinearGradient(
+                colors: [.clear, Color.white.opacity(0.6)],
+                startPoint: .leading,
+                endPoint: .trailing
+            )
+            .frame(width: width, height: isScrubbing ? 20 : 10)
+            .clipShape(Capsule())
+            .blendMode(.plusLighter)
+            .offset(x: max(0, playheadX - width))
+            .allowsHitTesting(false)
+        }
+
+        /// The Helix mark rides the track, centred on it like a native playhead.
+        @ContentBuilder
+        private var helixPlayhead: some View {
+            HelixPlayhead(size: playheadSize, isActive: isScrubbing)
+                .offset(x: playheadX - playheadSize / 2)
+                .allowsHitTesting(false)
+        }
+
         private var isLoading: Bool {
             mediaSession.activity == .loading || mediaSession.playbackState.isBuffering
         }
@@ -181,7 +219,7 @@ extension VideoPlayer.PlaybackControls {
                 }
                 .frame(maxWidth: .infinity)
                 .frame(height: isScrubbing ? 20 : 10)
-                .foregroundStyle(mediaSession.canSeek ? Color.white : Color.gray)
+                .foregroundStyle(mediaSession.canSeek ? Color.helixGold : Color.gray) // Helix TV: gold track
                 .phaseAnimator(isLoading && !reduceMotion ? [false, true] : [false]) { content, dimmed in
                     content.opacity(dimmed ? 0.8 : 1)
                 } animation: { _ in
@@ -225,6 +263,8 @@ extension VideoPlayer.PlaybackControls {
                 } else {
                     capsuleSlider
                         .trackingSize($sliderSize)
+                        .overlay(alignment: .leading) { helixTrail }
+                        .overlay(alignment: .leading) { helixPlayhead }
                         .accessibilityElement()
                         .accessibilityLabel(L10n.playbackPosition)
                         .accessibilityValue(accessibilityValue)
