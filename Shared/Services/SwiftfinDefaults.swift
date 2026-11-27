@@ -316,7 +316,7 @@ extension Defaults.Keys {
             }
 
             static var multiTapGesture: Key<MultiTapGestureAction> {
-                UserKey("videoPlayerMultiTapGesture", default: .none)
+                UserKey("videoPlayerMultiTapGesture", default: .jump) // Helix TV: double-tap left/right skips, like every other player
             }
 
             static var doubleTouchGesture: Key<DoubleTouchGestureAction> {
