@@ -34,13 +34,14 @@ def wordmark(font_path, height):
     """HELIX (white) + TV (gold) in Michroma, tracked. Returns RGBA image."""
     if not font_path: return None
     f = ImageFont.truetype(font_path, height)
-    track = int(height * 0.32)
+    track = int(height * 0.10)
     def width(txt): return sum(f.getlength(ch) + track for ch in txt)
-    w = int(width("HELIXTV")) + height; img = Image.new("RGBA", (w, int(height*1.5)), (0, 0, 0, 0)); d = ImageDraw.Draw(img)
+    w = int(width("HELIXTV")) + height * 2; img = Image.new("RGBA", (w, int(height*1.5)), (0, 0, 0, 0)); d = ImageDraw.Draw(img)
     x = 0
     for ch in "HELIXTV":
         col = INK if ch in "HELIX" else GOLD
-        d.text((x, height*0.15), ch, font=f, fill=col + (255,)); x += f.getlength(ch) + track
+        if ch == "T": x += int(height * 0.45)
+        d.text((x, height*0.15), ch, font=f, fill=col + (255,), stroke_width=max(1, height // 60), stroke_fill=col + (255,)); x += f.getlength(ch) + track
     return img.crop(img.getbbox())
 
 def save(img, *path):
@@ -53,16 +54,14 @@ def main():
         sfx = "" if scale == 1 else "@2x"
         save(carbon(w, h), BRAND, "App Icon.imagestack", "Back.imagestacklayer", "Content.imageset", f"back{sfx}.png")
         # front layer: mark on top, HELIXTV wordmark beneath (tvOS shows the app name in the system font only, so the tile carries it)
-        front = Image.new("RGBA", (fsz, fsz), (0, 0, 0, 0)); m = mark(int(fsz * 0.56)); wm = wordmark(a.font, int(fsz * 0.085))
-        gap = int(fsz * 0.05); total = m.height + (gap + wm.height if wm else 0); y = (fsz - total) // 2
-        front.alpha_composite(m, ((fsz - m.width)//2, y))
-        if wm:
-            wm = wm.resize((min(wm.width, int(fsz * 0.86)), int(wm.height * min(1, fsz * 0.86 / wm.width))), Image.LANCZOS)
-            front.alpha_composite(wm, ((fsz - wm.width)//2, y + m.height + gap))
+        front = Image.new("RGBA", (w, h), (0, 0, 0, 0)); m = mark(int(h * 0.56)); wm = wordmark(a.font, int(h * 0.2))
+        r = w * 0.84 / wm.width; wm = wm.resize((int(wm.width * r), int(wm.height * r)), Image.LANCZOS)
+        gap = int(h * 0.03); total = m.height + gap + wm.height; y = (h - total) // 2
+        front.alpha_composite(m, ((w - m.width)//2, y)); front.alpha_composite(wm, ((w - wm.width)//2, y + m.height + gap))
         save(front, BRAND, "App Icon.imagestack", "Front.imagestacklayer", "Content.imageset", f"front{sfx}.png")
     # App Store icon 1280x768: Back carbon, Front 512 mark
     save(carbon(1280, 768), BRAND, "App Icon - App Store.imagestack", "Back.imagestacklayer", "Content.imageset", "1280x768-back.png")
-    front = Image.new("RGBA", (512, 512), (0, 0, 0, 0)); m = mark(300); wm = wordmark(a.font, 44)
+    front = Image.new("RGBA", (512, 512), (0, 0, 0, 0)); m = mark(280); wm = wordmark(a.font, 72); r = 490 / wm.width; wm = wm.resize((int(wm.width * r), int(wm.height * r)), Image.LANCZOS)
     y = (512 - (m.height + 24 + (wm.height if wm else 0))) // 2; front.alpha_composite(m, ((512 - m.width)//2, y))
     if wm: front.alpha_composite(wm, ((512 - wm.width)//2, y + m.height + 24))
     save(front, BRAND, "App Icon - App Store.imagestack", "Front.imagestacklayer", "Content.imageset", "512.png")
