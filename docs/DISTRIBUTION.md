@@ -14,7 +14,7 @@ Set up 2026-11-26 with Brandon at the keyboard.
 - 3 Apple TVs in the house (4 soon) → they get the app via TestFlight, not pairing.
 
 ## Uploading (done from the mini)
-`tools/upload-testflight.sh tvos|ios` = archive to ~/Library/Developer/Xcode/Archives/<date>/ + export/upload with
+`Tools/upload-testflight.sh tvos|ios` = archive to ~/Library/Developer/Xcode/Archives/<date>/ + export/upload with
 `~/.helixtv/export/ExportOptions.plist` (method app-store-connect, destination upload, team GYWYUZLMZN, automatic signing).
 GOTCHA (2026-11-26): `xcodebuild -exportArchive` failed with "Copy failed" three times. Root cause: the IPA step runs
 `/usr/bin/rsync` (Apple openrsync), which spawns the *server* side from PATH → Homebrew rsync 3.5.0 → "--extended-attributes:
@@ -33,7 +33,7 @@ is harmless (prebuilt binary, no symbols).
 ## Current state (2026-11-27 00:50)
 - TestFlight: tvOS 1.4.1 (70) and iOS 1.5.0 (100) in "Helix Internal". Both are BEHIND the branch (phone player pass,
   merged Continue Watching, one-card New Episodes, image snapping). Next upload: bump CURRENT_PROJECT_VERSION to 101 and run
-  `tools/upload-testflight.sh tvos` and `... ios`.
+  `Tools/upload-testflight.sh tvos` and `... ios`.
 - Pending: Brandon accepts the App Store Connect invite (blaubach09@gmail.com) → add to Helix Internal; Chelsey/Ryan already users.
 - Later: 1024 App Store marketing icon only matters for a store listing, not TestFlight; family Apple IDs = more internal testers.
 
