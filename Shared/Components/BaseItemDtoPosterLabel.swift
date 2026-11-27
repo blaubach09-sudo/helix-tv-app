@@ -35,6 +35,13 @@ struct BaseItemDtoPosterLabel: View {
         return item.seasonEpisodeLabel ?? item.episodeLocator
     }
 
+    /// Helix TV: "Bluey · S1:E12" — the show name rides along on Home/Search thumbs, truncating before the locator does.
+    private var episodeSeriesName: String? {
+        guard item.type == .episode, let seriesName = item.seriesName, !seriesName.isEmpty else { return nil }
+
+        return seriesName
+    }
+
     private var subtitle: String? {
         guard let subtitle = item.posterSubtitle(using: posterConfiguration.subtitleField),
               item.extraType != nil || subtitle != item.displayTitle else { return nil }
@@ -93,6 +100,11 @@ struct BaseItemDtoPosterLabel: View {
             }
         } else if hasSubtitle {
             DotHStack {
+                if let episodeSeriesName {
+                    Text(episodeSeriesName)
+                        .lineLimit(1)
+                }
+
                 if let episodeLocator {
                     Text(episodeLocator)
                         .fixedSize()
