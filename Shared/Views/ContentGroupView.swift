@@ -121,6 +121,11 @@ struct ContentGroupView<Provider: ContentGroupProvider>: View {
         }
     }
 
+    /// Helix TV: the iPhone home root shows the wordmark in place of a title.
+    private var isHelixHome: Bool {
+        router.isRootOfPath && viewModel.provider.displayTitle == L10n.home
+    }
+
     @ContentBuilder
     var body: some View {
         Group {
@@ -152,7 +157,14 @@ struct ContentGroupView<Provider: ContentGroupProvider>: View {
         .animation(.linear(duration: 0.2), value: viewModel.background.states)
         .navigationTitle(viewModel.provider.displayTitle)
         #if os(iOS)
-        .toolbarTitleDisplayMode(router.isRootOfPath ? .inlineLarge : .inline)
+        .toolbarTitleDisplayMode(router.isRootOfPath && !isHelixHome ? .inlineLarge : .inline)
+        .toolbar {
+            if isHelixHome {
+                ToolbarItem(placement: .principal) {
+                    HelixWordmark(size: 17) // Helix TV: brand the home root instead of a "Home" title
+                }
+            }
+        }
         #elseif os(tvOS)
         .toolbar(router.isRootOfPath ? .hidden : .automatic, for: .navigationBar)
         #endif

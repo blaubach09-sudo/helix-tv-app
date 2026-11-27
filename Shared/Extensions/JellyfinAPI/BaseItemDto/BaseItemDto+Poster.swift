@@ -44,7 +44,7 @@ extension BaseItemDto: Poster {
     var subtitle: String? {
         switch type {
         case .episode:
-            seasonEpisodeLabel
+            [seriesName, seasonEpisodeLabel].compactMap(\.self).joined(separator: "  ·  ") // Helix TV: "Bluey · S1:E12"
         case .person:
             people?.first?.displayRole
         case .video:

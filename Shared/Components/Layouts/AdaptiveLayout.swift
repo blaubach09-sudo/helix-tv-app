@@ -116,11 +116,11 @@ struct ViewLayout: Equatable {
 
         let width: CGFloat = switch (displayType, size) {
         case (.landscape, .small):
-            usesCompactPosters ? 160 : 180
+            usesCompactPosters ? 140 : 180 // Helix TV: ~2.5 thumbs per phone row
         case (.landscape, .medium):
             usesCompactPosters ? 220 : 300
         case (_, .small):
-            usesCompactPosters ? 110 : 120
+            usesCompactPosters ? 92 : 120 // Helix TV: ~3.5 posters per phone row
         default:
             usesCompactPosters ? 160 : 200
         }
